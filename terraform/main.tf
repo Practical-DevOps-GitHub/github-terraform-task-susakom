@@ -8,9 +8,6 @@ terraform {
 
 }
 
-
-
-
 # ==============================
 # РЕСУРС: Управление существующим репозиторием
 # ==============================
@@ -21,9 +18,6 @@ resource "github_repository" "existing_repo" {
   has_issues  = true
   has_projects = false
   has_wiki     = false
-
-  # Указываем, что default ветка — develop
-  default_branch = "develop"
 }
 
 # ==============================
@@ -36,10 +30,17 @@ resource "github_branch" "develop_branch" {
   branch     = "develop"
 }
 
+resource "github_branch_default" "default_develop" {
+  repository_id = data.github_repository.existing_repo_data.id
+  branch        = github_branch.develop_branch.branch
+
+
+
 # Получаем ID репозитория для защиты веток
 data "github_repository" "existing_repo_data" {
   name = github_repository.existing_repo.name
 }
+
 
 # ==============================
 # РЕСУРС: Защита ветки main
