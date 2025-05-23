@@ -33,8 +33,8 @@ jobs:
           pwd
           ls -al
           echo "create_develop_branch = true" > terraform.tfvars
-          echo "github_pat = \"$TF_VAR_github_pat\"" >> terraform.tfvars
-          echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" >> terraform.tfvars
+          echo "github_pat = \"$TF_VAR_github_pat\"" > terraform.tfvars
+          echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" > terraform.tfvars
           cat terraform.tfvars
           terraform plan
 
