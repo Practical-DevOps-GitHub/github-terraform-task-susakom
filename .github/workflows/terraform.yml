@@ -41,6 +41,8 @@ jobs:
           pwd
           cd terraform
           pwd
+          cat terraform.tfvars
+          cat variables.tf
           echo "create_develop_branch = true" > terraform.tfvars
           echo "github_pat = \"$TF_VAR_github_pat\"" >> terraform.tfvars
           echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" >> terraform.tfvars
