@@ -45,7 +45,7 @@ data "github_repository" "existing_repo_data" {
 # ==============================
 # РЕСУРС: Защита ветки main
 # ==============================
-resource "github_branch_protection" "mainbranch_protection" {
+resource "github_branch_protection" "branch_protection" {
   repository_id = data.github_repository.existing_repo.name
   pattern       = "main"
   required_pull_request_reviews {
