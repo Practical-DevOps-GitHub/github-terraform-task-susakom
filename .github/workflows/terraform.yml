@@ -30,7 +30,7 @@ jobs:
           cd terraform
           pwd
           ls -al
-          cat terraform.tfvars
+          cat variables.tf
           terraform plan
 
       - name: Terraform Apply
