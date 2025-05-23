@@ -19,25 +19,28 @@ data "github_repository" "existing_repo" {
   full_name = "Practical-DevOps-GitHub/github-terraform-task-susakom"
 }
 
+
+# Получаем ID репозитория для защиты веток
+data "github_repository" "existing_repo_data" {
+  name = data.github_repository.existing_repo.name
+}
+
+
+
 # ==============================
-# РЕСУРС: Создание ветки develop (условное, если ветка существует данная часть пропуститься)
+# РЕСУРС: Создание ветки develop 
 # ==============================
 resource "github_branch" "develop_branch" {
-  repository = data.github_repository.existing_repo.name
+  repository_id = data.github_repository.existing_repo.id
   branch     = "develop"
   source_branch = "main"
 }
 
 resource "github_branch_default" "default_develop" {
-  repository = data.github_repository.existing_repo.name
+  repository_id = data.github_repository.existing_repo.id
   branch     = github_branch.develop_branch.branch
   depends_on = [github_branch.develop_branch]
 
-}
-
-# Получаем ID репозитория для защиты веток
-data "github_repository" "existing_repo_data" {
-  name = data.github_repository.existing_repo.name
 }
 
 
