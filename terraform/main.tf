@@ -95,9 +95,10 @@ resource "github_repository_collaborator" "add_user" {
 # ==============================
 resource "github_repository_file" "codeowners" {
   repository = github_repository.existing_repo.name
-  file       = ".github/CODEOWNERS"
-  content    = base64encode("* @softservedata")
   branch     = "main"
+  file       = ".github/CODEOWNERS"
+  content    = "* @softservedata"
+  overwrite_on_create = true
 }
 resource "github_repository_file" "pull_request_template" {
   repository = github_repository.existing_repo.name
