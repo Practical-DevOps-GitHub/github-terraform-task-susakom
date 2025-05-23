@@ -1,0 +1,42 @@
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init
+
+      - name: Terraform Plan
+        run: |
+          cd terraform
+          terraform plan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          TF_VAR_github_pat: ${{ secrets.GITHUB_PAT }}
+          TF_VAR_deploy_key_pub: ${{ secrets.DEPLOY_KEY_PUB }}
+        run: |
+          cd terraform
+          echo "create_develop_branch = true" > terraform.tfvars
+          echo "github_pat = \"$TF_VAR_github_pat\"" >> terraform.tfvars
+          echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" >> terraform.tfvars
+          terraform apply -auto-approve
