@@ -45,6 +45,7 @@ jobs:
           TF_VAR_deploy_key_pub: ${{ secrets.DEPLOY_KEY_PUB }}
         run: |
           pwd
+          ls -al
           cd terraform
           pwd
           echo "create_develop_branch = true" > terraform.tfvars
