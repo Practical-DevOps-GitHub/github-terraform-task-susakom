@@ -59,7 +59,7 @@ resource "github_branch_protection" "main_protection" {
 # РЕСУРС: Защита ветки develop
 # ==============================
 resource "github_branch_protection" "develop_protection" {
-  repository_id = data.github_repository.existing_repo.name.id
+  repository_id = data.github_repository.existing_repo.name
   pattern          = "develop"
 required_pull_request_reviews {
     require_code_owner_reviews  = false
