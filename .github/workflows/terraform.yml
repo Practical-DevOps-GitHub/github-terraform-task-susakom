@@ -30,7 +30,7 @@ jobs:
           terraform plan
 
       - name: Terraform Apply
-       # if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         env:
           TF_VAR_github_pat: ${{ secrets.GITHUB_PAT }}
           TF_VAR_deploy_key_pub: ${{ secrets.DEPLOY_KEY_PUB }}
