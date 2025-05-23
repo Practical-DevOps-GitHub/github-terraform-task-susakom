@@ -53,4 +53,5 @@ jobs:
           echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" >> terraform.tfvars
           ls -al
           cat terraform.tfvars
-          terraform apply -auto-approve
+          # terraform apply -auto-approve
+          terraform apply
