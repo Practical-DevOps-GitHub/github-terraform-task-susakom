@@ -23,8 +23,6 @@ data "github_repository" "existing_repo" {
 # РЕСУРС: Создание ветки develop (условное, если ветка существует данная часть пропуститься)
 # ==============================
 resource "github_branch" "develop_branch" {
-  # count = var.create_develop_branch ? 1 : 0
-
   repository = data.github_repository.existing_repo.name
   branch     = "develop"
 }
