@@ -17,13 +17,8 @@ provider "github" {
 # ==============================
 # РЕСУРС: Управление существующим репозиторием
 # ==============================
-resource "github_repository" "existing_repo" {
-  name        = "github-terraform-task-susakom"
-  description = "Управляемый через Terraform"
-  visibility  = "public"
-  has_issues  = true
-  has_projects = false
-  has_wiki     = false
+data "github_repository" "existing_repo" {
+  name = "github-terraform-task-susakom"
 }
 
 # ==============================
