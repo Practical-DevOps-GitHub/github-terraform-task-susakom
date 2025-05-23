@@ -45,4 +45,5 @@ jobs:
           echo "github_pat = \"$TF_VAR_github_pat\"" >> terraform.tfvars
           echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" >> terraform.tfvars
           ls -al
+          cat terraform.tfvars
           terraform apply -auto-approve
