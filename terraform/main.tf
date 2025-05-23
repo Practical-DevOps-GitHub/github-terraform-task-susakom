@@ -16,8 +16,7 @@ provider "github" {
 # РЕСУРС: Управление существующим репозиторием
 # ==============================
 data "github_repository" "existing_repo" {
-  name = "github-terraform-task-susakom"
-  owner = "Practical-DevOps-GitHub"
+  full_name = "Practical-DevOps-GitHub/github-terraform-task-susakom"
 }
 
 # ==============================
