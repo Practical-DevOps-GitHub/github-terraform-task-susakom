@@ -25,12 +25,17 @@ jobs:
           terraform init
 
       - name: Terraform Plan
+        env:
+          TF_VAR_github_pat: ${{ secrets.GITHUB_PAT }}
+          TF_VAR_deploy_key_pub: ${{ secrets.DEPLOY_KEY_PUB }}
         run: |
-          pwd
           cd terraform
           pwd
           ls -al
-          cat variables.tf
+          echo "create_develop_branch = true" > terraform.tfvars
+          echo "github_pat = \"$TF_VAR_github_pat\"" >> terraform.tfvars
+          echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" >> terraform.tfvars
+          cat terraform.tfvars
           terraform plan
 
       - name: Terraform Apply
