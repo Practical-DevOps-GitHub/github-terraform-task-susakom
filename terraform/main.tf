@@ -24,7 +24,7 @@ resource "github_repository" "existing_repo" {
 # РЕСУРС: Создание ветки develop (условное, если ветка существует данная часть пропуститься)
 # ==============================
 resource "github_branch" "develop_branch" {
-  count = var.create_develop_branch ? 1 : 0
+  # count = var.create_develop_branch ? 1 : 0
 
   repository = github_repository.existing_repo.name
   branch     = "develop"
@@ -32,7 +32,7 @@ resource "github_branch" "develop_branch" {
 
 resource "github_branch_default" "default_develop" {
   repository = github_repository.existing_repo.name
-  branch     = github_branch.develop_branch[1].branch
+  branch     = github_branch.develop_branch.branch
 
 }
 
