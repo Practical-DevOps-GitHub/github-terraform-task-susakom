@@ -9,9 +9,10 @@ resource "github_repository" "existing_repo" {
   has_issues  = true
   has_projects = false
   has_wiki     = false
-
-  # Указываем, что default ветка — develop
-  default_branch = "develop"
+}
+# Указываем, что default ветка — develop
+resource "github_branch_default" "default_branch_change" {
+   default_branch = "develop"
 }
 
 # ==============================
@@ -34,7 +35,7 @@ resource "github_branch_protection" "main_protection" {
   branch          = "main"
 
 
-  required_pull_request_review {
+  required_pull_request_reviews {
     require_code_owner_reviews  = true   # требуется апрув от владельца
     required_approving_count    = 1
   }
