@@ -12,8 +12,6 @@ provider "github" {
   token = var.github_pat
 }
 
-
-
 # ==============================
 # РЕСУРС: Управление существующим репозиторием
 # ==============================
@@ -27,19 +25,19 @@ data "github_repository" "existing_repo" {
 resource "github_branch" "develop_branch" {
   # count = var.create_develop_branch ? 1 : 0
 
-  repository = github_repository.existing_repo.name
+  repository = data.github_repository.existing_repo.name
   branch     = "develop"
 }
 
 resource "github_branch_default" "default_develop" {
-  repository = github_repository.existing_repo.name
+  repository = data.github_repository.existing_repo.name
   branch     = github_branch.develop_branch.branch
 
 }
 
 # Получаем ID репозитория для защиты веток
 data "github_repository" "existing_repo_data" {
-  name = github_repository.existing_repo.name
+  name = data.github_repository.existing_repo.name
 }
 
 
@@ -71,7 +69,7 @@ required_pull_request_reviews {
 # РЕСУРС: Добавление секрета TERRAFORM
 # ==============================
 resource "github_actions_secret" "terraform_code" {
-  repository      = github_repository.existing_repo.name
+  repository      = data.github_repository.existing_repo.name
   secret_name     = "TERRAFORM"
   plaintext_value = file("${path.module}/main.tf")
 }
@@ -80,7 +78,7 @@ resource "github_actions_secret" "terraform_code" {
 # РЕСУРС: Добавление пользователя в репозиторий
 # ==============================
 resource "github_repository_collaborator" "add_user" {
-  repository       = github_repository.existing_repo.name
+  repository       = data.github_repository.existing_repo.name
   username         = "softservedata"
   permission = "admin"
 }
@@ -89,14 +87,14 @@ resource "github_repository_collaborator" "add_user" {
 # РЕСУРС: Добавление файла CODEOWNERS
 # ==============================
 resource "github_repository_file" "codeowners" {
-  repository = github_repository.existing_repo.name
+  repository = data.github_repository.existing_repo.name
   branch     = "main"
   file       = ".github/CODEOWNERS"
   content    = "* @softservedata"
   overwrite_on_create = true
 }
 resource "github_repository_file" "pull_request_template" {
-  repository = github_repository.existing_repo.name
+  repository = data.github_repository.existing_repo.name
   file       = ".github/pull_request_template.md"
   content    = base64encode("### Describe your changes\n\n<!-- Please describe what you've changed -->\n\n---\n\n### Issue ticket number and link\n\n<!-- For example: Closes #123 or https://github.com/your/repo/issues/123  -->\n\n---\n\n### Checklist before requesting a review\n\n- [ ] I have performed a self-review of my code\n- [ ] If it is a core feature, I have added thorough tests\n- [ ] Do we need to implement analytics?\n- [ ] Will this be part of a product update?\n<!-- If yes, please write one phrase about this update -->")
   branch     = "develop"
@@ -107,7 +105,7 @@ resource "github_repository_file" "pull_request_template" {
 # РЕСУРС: Добавление Deploy Key
 # ==============================
 resource "github_repository_deploy_key" "deploy_key" {
-  repository = github_repository.existing_repo.name
+  repository = data.github_repository.existing_repo.name
   title      = "DEPLOY_KEY"
   key        = var.deploy_key_pub
   read_only  = false
@@ -117,7 +115,7 @@ resource "github_repository_deploy_key" "deploy_key" {
 # РЕСУРС: Сохраняем Discord Webhook как секрет
 # ==============================
 resource "github_actions_secret" "discord_webhook" {
-  repository      = github_repository.existing_repo.name
+  repository      = data.github_repository.existing_repo.name
   secret_name     = "DISCORD_WEBHOOK_URL"
   plaintext_value = "https://discord.com/api/webhooks/1371418780156170290/kGb66wF5tigR-zVGhcsY2HFOc_2zzPc3pgLJMT81dMW6hMCx1sEkC-AY8sEQX0rVF9rX"
 }
@@ -126,7 +124,7 @@ resource "github_actions_secret" "discord_webhook" {
 # РЕСУРС: Добавляем GitHub Action для уведомлений в Discord
 # ==============================
 resource "github_repository_file" "discord_pr_notifier" {
-  repository = github_repository.existing_repo.name
+  repository = data.github_repository.existing_repo.name
   file       = ".github/workflows/pull_request_discord_notify.yml"
   content    = base64encode(file("${path.module}/templates/pull_request_discord_notify.yml"))
   branch     = "main"
@@ -134,7 +132,7 @@ resource "github_repository_file" "discord_pr_notifier" {
 
 
 resource "github_actions_secret" "github_pat_secret" {
-  repository      = github_repository.existing_repo.name
+  repository      = data.github_repository.existing_repo.name
   secret_name     = "PAT"
   plaintext_value = var.github_pat
 }
