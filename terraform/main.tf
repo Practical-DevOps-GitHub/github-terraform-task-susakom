@@ -17,6 +17,7 @@ provider "github" {
 # ==============================
 data "github_repository" "existing_repo" {
   name = "github-terraform-task-susakom"
+  owner = "Practical-DevOps-GitHub"
 }
 
 # ==============================
