@@ -49,7 +49,7 @@ resource "github_branch_protection" "main_protection" {
   pattern       = "main"
   required_pull_request_reviews {
     require_code_owner_reviews  = true   # требуется апрув от владельца
-    required_approving_count    = 1
+    required_approving_review_count    = 1
   }
 }
 
@@ -61,7 +61,7 @@ resource "github_branch_protection" "develop_protection" {
   pattern          = "develop"
 required_pull_request_reviews {
     require_code_owner_reviews  = false
-    required_approving_count    = 2
+    required_approving_review_count    = 2
   }
 }
 
