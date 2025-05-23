@@ -25,6 +25,7 @@ data "github_repository" "existing_repo" {
 resource "github_branch" "develop_branch" {
   repository = data.github_repository.existing_repo.name
   branch     = "develop"
+  source_branch = "main"
 }
 
 resource "github_branch_default" "default_develop" {
