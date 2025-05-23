@@ -32,7 +32,7 @@ resource "github_branch" "develop_branch" {
 
 resource "github_branch_default" "default_develop" {
   repository = github_repository.existing_repo.name
-  branch     = github_branch.develop_branch.branch
+  branch     = github_branch.develop_branch[1].branch
 
 }
 
