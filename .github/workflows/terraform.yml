@@ -29,6 +29,7 @@ jobs:
           pwd
           cd terraform
           pwd
+          ls -al
           terraform plan
 
       - name: Terraform Apply
