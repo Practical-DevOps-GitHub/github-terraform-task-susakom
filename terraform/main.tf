@@ -34,7 +34,7 @@ resource "github_branch_protection" "main_protection" {
   branch          = "main"
 
 
-  required_pull_request_review {
+  required_pull_request_reviews {
     require_code_owner_reviews  = true   # требуется апрув от владельца
     required_approving_count    = 1
   }
@@ -69,7 +69,7 @@ resource "github_actions_secret" "terraform_code" {
 resource "github_repository_collaborator" "add_user" {
   repository       = github_repository.existing_repo.name
   username         = "softservedata"
-  permission_level = "admin"
+  permission = "admin"
 }
 
 # ==============================
