@@ -138,3 +138,8 @@ resource "github_actions_secret" "github_pat_secret" {
   secret_name     = "PAT"
   plaintext_value = var.github_pat
 }
+
+
+output "repo_info" {
+  value = data.github_repository.existing_repo
+}
