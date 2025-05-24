@@ -20,13 +20,6 @@ data "github_repository" "existing_repo" {
 }
 
 
-# Получаем ID репозитория для защиты веток
-data "github_repository" "existing_repo_data" {
-  name = data.github_repository.existing_repo.name
-}
-
-
-
 # ==============================
 # РЕСУРС: Создание ветки develop 
 # ==============================
