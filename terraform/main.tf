@@ -44,7 +44,7 @@ resource "github_branch_default" "default_develop" {
 # РЕСУРС: Защита ветки main
 # ==============================
 resource "github_branch_protection" "main_protection" {
-  repository_id = data.github_repository.existing_repo.repo_id
+  repository = data.github_repository.existing_repo.name
   pattern       = "main"
   required_pull_request_reviews {
     require_code_owner_reviews  = true   # требуется апрув от владельца
@@ -57,7 +57,7 @@ resource "github_branch_protection" "main_protection" {
 # РЕСУРС: Защита ветки develop
 # ==============================
 resource "github_branch_protection" "develop_protection" {
-  repository_id = data.github_repository.existing_repo.repo_id
+  repository = data.github_repository.existing_repo.name
   pattern          = "develop"
 required_pull_request_reviews {
     require_code_owner_reviews  = false
@@ -97,7 +97,7 @@ resource "github_repository_file" "codeowners" {
 resource "github_repository_file" "pull_request_template" {
   repository = data.github_repository.existing_repo.name
   file       = ".github/pull_request_template.md"
-  content    = base64encode("### Describe your changes\n\n<!-- Please describe what you've changed -->\n\n---\n\n### Issue ticket number and link\n\n<!-- For example: Closes #123 or https://github.com/your/repo/issues/123  -->\n\n---\n\n### Checklist before requesting a review\n\n- [ ] I have performed a self-review of my code\n- [ ] If it is a core feature, I have added thorough tests\n- [ ] Do we need to implement analytics?\n- [ ] Will this be part of a product update?\n<!-- If yes, please write one phrase about this update -->")
+  content    = "### Describe your changes\n\n<!-- Please describe what you've changed -->\n\n---\n\n### Issue ticket number and link\n\n<!-- For example: Closes #123 or https://github.com/your/repo/issues/123  -->\n\n---\n\n### Checklist before requesting a review\n\n- [ ] I have performed a self-review of my code\n- [ ] If it is a core feature, I have added thorough tests\n- [ ] Do we need to implement analytics?\n- [ ] Will this be part of a product update?\n<!-- If yes, please write one phrase about this update -->"
   branch     = "develop"
 }
 
