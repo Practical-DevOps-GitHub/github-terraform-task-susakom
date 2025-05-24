@@ -30,7 +30,7 @@ resource "github_branch" "develop_branch" {
 }
 
 resource "github_branch_default" "default_develop" {
-  repository = data.github_repository.existing_repo.name
+  repository = data.github_repository.existing_repo.repo_id
   branch     = github_branch.develop_branch.branch
   depends_on = [github_branch.develop_branch]
 
@@ -41,7 +41,7 @@ resource "github_branch_default" "default_develop" {
 # РЕСУРС: Защита ветки main
 # ==============================
 resource "github_branch_protection" "main_protection" {
-  repository_id = data.github_repository.existing_repo.id
+  repository = data.github_repository.existing_repo.repo_id
   pattern       = "main"
   required_pull_request_reviews {
     require_code_owner_reviews  = true   # требуется апрув от владельца
