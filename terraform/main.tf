@@ -25,10 +25,19 @@ data "github_repository" "existing_repo" {
 resource "github_branch_protection" "main_protection" {
   repository_id = data.github_repository.existing_repo.name
   pattern       = "main"
-  required_pull_request_reviews {
-    require_code_owner_reviews        = false   # требуется апрув от владельца
-    required_approving_review_count   = 1
-  }
+   allows_deletions             = false
+   allows_force_pushes          = false
+   require_conversation_resolution = false
+   require_signed_commits       = false
+   required_linear_history      = false
+
+
+
+
+#required_pull_request_reviews {
+#    require_code_owner_reviews        = false   # требуется апрув от владельца
+#    required_approving_review_count   = 1
+#  }
   depends_on = [data.github_repository.existing_repo]
 }
 
