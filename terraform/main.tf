@@ -24,7 +24,7 @@ data "github_repository" "existing_repo" {
 # РЕСУРС: Создание ветки develop 
 # ==============================
 resource "github_branch" "develop_branch" {
-  repository = data.github_repository.existing_repo.name
+  repository_id = data.github_repository.existing_repo.id
   branch     = "develop"
   source_branch = "main"
 }
