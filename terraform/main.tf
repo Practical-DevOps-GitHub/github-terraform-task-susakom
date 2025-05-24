@@ -23,7 +23,7 @@ data "github_repository" "existing_repo" {
 # РЕСУРС: Защита ветки main
 # ==============================
 resource "github_branch_protection" "main_protection" {
-  repository_id = data.github_repository.existing_repo.id
+  repository = data.github_repository.existing_repo.name
   pattern       = "main"
   required_pull_request_reviews {
     require_code_owner_reviews        = true   # требуется апрув от владельца
