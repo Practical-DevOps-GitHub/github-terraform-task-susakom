@@ -27,13 +27,13 @@ data "github_repository" "existing_repo" {
 # РЕСУРС: Создание ветки develop 
 # ==============================
 resource "github_branch" "develop_branch" {
-  repository= data.github_repository.existing_repo.repo_id
+  repository= data.github_repository.existing_repo.name
   branch     = "develop"
   source_branch = "main"
 }
 
 resource "github_branch_default" "default_develop" {
-  repository = data.github_repository.existing_repo.repo_id
+  repository = data.github_repository.existing_repo.name
   branch     = github_branch.develop_branch.branch
   depends_on = [github_branch.develop_branch]
 
