@@ -9,8 +9,11 @@ terraform {
 }
 
 provider "github" {
-  token = var.github_pat
+  token     = var.github_pat
+  owner     = "Practical-DevOps-GitHub" # ⇨ Здесь указываем нужную организацию
 }
+
+
 
 # ==============================
 # РЕСУРС: Управление существующим репозиторием
