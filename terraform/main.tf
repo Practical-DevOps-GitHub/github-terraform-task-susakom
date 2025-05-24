@@ -5,15 +5,12 @@ terraform {
       version = "~> 6.0"
     }
   }
-
 }
 
 provider "github" {
   token     = var.github_pat
   owner     = "Practical-DevOps-GitHub" # ⇨ Здесь указываем нужную организацию
 }
-
-
 
 # ==============================
 # РЕСУРС: Управление существующим репозиторием
@@ -22,6 +19,25 @@ data "github_repository" "existing_repo" {
   full_name = "Practical-DevOps-GitHub/github-terraform-task-susakom"
 }
 
+# ==============================
+# РЕСУРС: Защита ветки main
+# ==============================
+resource "github_branch_protection" "main_protection" {
+  repository_id = data.github_repository.existing_repo.id
+  pattern       = "main"
+  required_pull_request_reviews {
+    require_code_owner_reviews        = true   # требуется апрув от владельца
+    required_approving_review_count   = 1
+  }
+  depends_on = [data.github_repository.existing_repo]
+}
+
+# ==============================
+# Остальные ресурсы временно закомментированы
+# чтобы сосредоточиться на защите ветки main
+# ==============================
+
+/* 
 
 # ==============================
 # РЕСУРС: Создание ветки develop 
@@ -36,21 +52,6 @@ resource "github_branch_default" "default_develop" {
   repository = data.github_repository.existing_repo.name
   branch     = github_branch.develop_branch.branch
   depends_on = [github_branch.develop_branch]
-
-}
-
-
-# ==============================
-# РЕСУРС: Защита ветки main
-# ==============================
-resource "github_branch_protection" "main_protection" {
-  repository_id = data.github_repository.existing_repo.id
-  pattern       = "main"
-  required_pull_request_reviews {
-    require_code_owner_reviews  = true   # требуется апрув от владельца
-    required_approving_review_count    = 1
-  }
-  depends_on = [data.github_repository.existing_repo]
 }
 
 # ==============================
@@ -59,11 +60,11 @@ resource "github_branch_protection" "main_protection" {
 resource "github_branch_protection" "develop_protection" {
   repository_id = data.github_repository.existing_repo.id
   pattern          = "develop"
-required_pull_request_reviews {
+  required_pull_request_reviews {
     require_code_owner_reviews  = false
     required_approving_review_count    = 2
   }
-depends_on = [github_branch.develop_branch]
+  depends_on = [github_branch.develop_branch]
 }
 
 # ==============================
@@ -97,7 +98,7 @@ resource "github_repository_file" "codeowners" {
 resource "github_repository_file" "pull_request_template" {
   repository = data.github_repository.existing_repo.name
   file       = ".github/pull_request_template.md"
-  content    = "### Describe your changes\n\n<!-- Please describe what you've changed -->\n\n---\n\n### Issue ticket number and link\n\n<!-- For example: Closes #123 or https://github.com/your/repo/issues/123  -->\n\n---\n\n### Checklist before requesting a review\n\n- [ ] I have performed a self-review of my code\n- [ ] If it is a core feature, I have added thorough tests\n- [ ] Do we need to implement analytics?\n- [ ] Will this be part of a product update?\n<!-- If yes, please write one phrase about this update -->"
+  content    = "### Describe your changes\n\n<!-- Please describe what you've changed -->\n\n---\n\n### Issue ticket number and link\n\n<!-- For example: Closes #123 or https://github.com/your/repo/issues/123     -->\n\n---\n\n### Checklist before requesting a review\n\n- [ ] I have performed a self-review of my code\n- [ ] If it is a core feature, I have added thorough tests\n- [ ] Do we need to implement analytics?\n- [ ] Will this be part of a product update?\n<!-- If yes, please write one phrase about this update -->"
   branch     = "develop"
 }
 
@@ -118,7 +119,7 @@ resource "github_repository_deploy_key" "deploy_key" {
 resource "github_actions_secret" "discord_webhook" {
   repository      = data.github_repository.existing_repo.name
   secret_name     = "DISCORD_WEBHOOK_URL"
-  plaintext_value = "https://discord.com/api/webhooks/1371418780156170290/kGb66wF5tigR-zVGhcsY2HFOc_2zzPc3pgLJMT81dMW6hMCx1sEkC-AY8sEQX0rVF9rX"
+  plaintext_value = "https://discord.com/api/webhooks/1371418780156170290/kGb66wF5tigR-zVGhcsY2HFOc_2zzPc3pgLJMT81dMW6hMCx1sEkC-AY8sEQX0rVF9rX   "
 }
 
 # ==============================
@@ -131,12 +132,13 @@ resource "github_repository_file" "discord_pr_notifier" {
   branch     = "main"
 }
 
-
 resource "github_actions_secret" "github_pat_secret" {
   repository      = data.github_repository.existing_repo.name
   secret_name     = "PAT"
   plaintext_value = var.github_pat
 }
+
+*/
 
 
 output "repo_info" {
