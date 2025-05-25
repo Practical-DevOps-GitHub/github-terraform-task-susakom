@@ -44,7 +44,7 @@ resource "github_branch_protection" "main_protection" {
   }
   depends_on = [github_repository_collaborator.add_user]
 }
-}
+
 
 # ==============================
 # Остальные ресурсы временно закомментированы
