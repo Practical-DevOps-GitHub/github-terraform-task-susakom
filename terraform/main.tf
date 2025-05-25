@@ -23,7 +23,7 @@ data "github_repository" "existing_repo" {
 # РЕСУРС: Защита ветки main
 # ==============================
 resource "github_branch_protection" "main_protection" {
-  repository = data.github_repository.existing_repo.name
+  repository_id = data.github_repository.existing_repo.name
   pattern       = "main"
   
   enforce_admins = true
