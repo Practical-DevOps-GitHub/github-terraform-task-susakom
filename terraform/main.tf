@@ -9,7 +9,7 @@ terraform {
 
 
 provider "github" {
-  token     = var.GITHUB_TOKEN
+  token     = var.github_pat
   owner     = "Practical-DevOps-GitHub" # ⇨ Здесь указываем нужную организацию
 }
 
@@ -22,25 +22,6 @@ data "github_repository" "existing_repo" {
 }
 
 
-# ==============================
-# РЕСУРС: Добавление PAT
-# ==============================
-resource "github_actions_secret" "github_pat_secret" {
-  repository      = data.github_repository.existing_repo.name
-  secret_name     = "PAT"
-  plaintext_value = var.GITHUB_TOKEN
-}
-
-
-# ==============================
-# РЕСУРС: Добавление Deploy Key
-# ==============================
-resource "github_repository_deploy_key" "deploy_key" {
-  repository = data.github_repository.existing_repo.name
-  title      = "DEPLOY_KEY_PUB"
-  key        = var.deploy_key_pub
-  read_only  = false
-}
 
 
 # ==============================
