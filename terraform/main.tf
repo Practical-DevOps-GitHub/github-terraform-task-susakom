@@ -9,7 +9,7 @@ terraform {
 
 
 provider "github" {
-  token     = var.github_pat
+  token     = var.GITHUB_TOKEN
   owner     = "Practical-DevOps-GitHub" # ⇨ Здесь указываем нужную организацию
 }
 
