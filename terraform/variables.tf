@@ -1,5 +1,5 @@
 
-variable "GITHUB_TOKEN" {
+variable "gitnub_pat" {
   type        = string
   description = "GitHub Personal Access Token"
   sensitive   = true
