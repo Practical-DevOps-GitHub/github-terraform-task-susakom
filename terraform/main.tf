@@ -7,10 +7,17 @@ terraform {
   }
 }
 
+
+github_pat = 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
+deploy_key_pub = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIj5doPA5fPI8+j21JGL9/j3F5b7shGX3Xlw4L+6rcWk deploy-key
+
+
+
 provider "github" {
-  token     = var.github_pat
+  token     = $github_pat
   owner     = "Practical-DevOps-GitHub" # ⇨ Здесь указываем нужную организацию
 }
+
 
 # ==============================
 # РЕСУРС: Управление существующим репозиторием
@@ -18,6 +25,28 @@ provider "github" {
 data "github_repository" "existing_repo" {
   full_name = "Practical-DevOps-GitHub/github-terraform-task-susakom"
 }
+
+
+# ==============================
+# РЕСУРС: Добавление PAT
+# ==============================
+resource "github_actions_secret" "github_pat_secret" {
+  repository      = data.github_repository.existing_repo.name
+  secret_name     = "PAT"
+  plaintext_value = $github_pat
+}
+
+
+# ==============================
+# РЕСУРС: Добавление Deploy Key
+# ==============================
+resource "github_repository_deploy_key" "deploy_key" {
+  repository = data.github_repository.existing_repo.name
+  title      = "DEPLOY_KEY_PUB"
+  key        = $deploy_key_pub
+  read_only  = false
+}
+
 
 # ==============================
 # РЕСУРС: Добавление пользователя в репозиторий
