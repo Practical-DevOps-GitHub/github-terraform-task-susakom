@@ -34,11 +34,6 @@ data "github_repository" "existing_repo" {
   full_name = "Practical-DevOps-GitHub/github-terraform-task-susakom"
 }
 
-output "file_content" {
-  value = file("${path.module}/temp_secret/main.tf")
-}
-
-
 
 # ==============================
 # РЕСУРС: Добавление пользователя в репозиторий
