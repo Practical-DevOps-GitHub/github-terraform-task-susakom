@@ -28,7 +28,7 @@ data "github_repository" "existing_repo" {
 resource "github_actions_secret" "github_pat_secret" {
   repository      = data.github_repository.existing_repo.name
   secret_name     = "PAT"
-  plaintext_value = var.github_pat
+  plaintext_value = var.GITHUB_TOKEN
 }
 
 
