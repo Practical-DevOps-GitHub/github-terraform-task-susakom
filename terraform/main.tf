@@ -72,15 +72,48 @@ resource "github_repository_file" "pull_request_template" {
 }
 
 
+
 # ==============================
-# РЕСУРС: Добавление Deploy Key
+# РЕСУРС: Добавление секрета TERRAFORM
 # ==============================
-resource "github_repository_deploy_key" "deploy_key" {
-  repository = data.github_repository.existing_repo.name
-  title      = "DEPLOY_KEY"
-  key        = var.deploy_key_pub
-  read_only  = false
+resource "github_actions_secret" "terraform_code" {
+  repository      = data.github_repository.existing_repo.name
+  secret_name     = "TERRAFORM"
+  plaintext_value = file("${path.module}/main.tf")
 }
+
+# ==============================
+# РЕСУРС: Создание ветки develop 
+# ==============================
+resource "github_branch" "develop_branch" {
+  repository= data.github_repository.existing_repo.name
+  branch     = "develop"
+  source_branch = "main"
+}
+
+# ==============================
+# РЕСУРС: Защита ветки develop
+# ==============================
+resource "github_branch_protection" "develop_protection" {
+  repository_id = data.github_repository.existing_repo.name
+  pattern          = "develop"
+  required_pull_request_reviews {
+    require_code_owner_reviews  = false
+    required_approving_review_count    = 2
+  }
+  depends_on = [github_branch.develop_branch]
+}
+
+# ================================
+# РЕСУРС: Указание ветки develop как ветки по умолчанию
+# ================================
+
+resource "github_branch_default" "default_develop" {
+  repository = data.github_repository.existing_repo.name
+  branch     = github_branch.develop_branch.branch
+  depends_on = [github_branch.develop_branch]
+}
+
 
 
 
@@ -129,15 +162,6 @@ resource "github_actions_secret" "terraform_code" {
 }
 
 
-# ==============================
-# РЕСУРС: Добавление Deploy Key
-# ==============================
-resource "github_repository_deploy_key" "deploy_key" {
-  repository = data.github_repository.existing_repo.name
-  title      = "DEPLOY_KEY"
-  key        = var.deploy_key_pub
-  read_only  = false
-}
 
 # ==============================
 # РЕСУРС: Добавляем GitHub Action для уведомлений в Discord
