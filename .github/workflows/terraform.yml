@@ -25,22 +25,17 @@ jobs:
         run: |
           cd terraform
           terraform init
-      - name: Show tfvars content
-        run: |
-           cat terraform/terraform.tfvars
+
+          
       - name: Terraform Plan
         env:
           TF_VAR_github_pat: ${{ secrets.PAT }}
         #  TF_VAR_deploy_key_pub: ${{ secrets.DEPLOY_KEY_PUB }}
         run: |
           cd terraform
-          ls -al
-          cat terraform.tfvars
-          terraform plan
-          
           echo "github_pat = \"$TF_VAR_github_pat\"" >> terraform.tfvars
-         # echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" >> terraform.tfvars
-          
+          echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" >> terraform.tfvars
+          terraform plan
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
