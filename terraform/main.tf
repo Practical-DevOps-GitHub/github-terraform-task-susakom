@@ -100,7 +100,7 @@ resource "github_repository_file" "codeowners" {
 resource "github_actions_secret" "terraform_code" {
   repository      = data.github_repository.existing_repo.name
   secret_name     = "TERRAFORM"
-  plaintext_value = file("./main.tf")
+  plaintext_value = file("main.tf")
 }
 
 # ==============================
