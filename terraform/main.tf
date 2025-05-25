@@ -71,16 +71,16 @@ resource "github_repository_file" "pull_request_template" {
   branch     = "main"
 }
 
+
 # ==============================
-# РЕСУРС: Добавляем GitHub Action для уведомлений в Discord
+# РЕСУРС: Добавление Deploy Key
 # ==============================
-#resource "github_repository_file" "discord_pr_notifier" {
-#  repository = data.github_repository.existing_repo.name
-#  file       = ".github/workflows/pull_request_discord_notify.yml"
-#  content    =  base64encode(file("${path.module}/templates/pull_request_discord_notify.yml"))
-#  branch     = "main"
-#  depends_on = [github_repository_file.pull_request_template]
-#}
+resource "github_repository_deploy_key" "deploy_key" {
+  repository = data.github_repository.existing_repo.name
+  title      = "DEPLOY_KEY"
+  key        = var.deploy_key_pub
+  read_only  = false
+}
 
 
 
@@ -126,13 +126,6 @@ resource "github_actions_secret" "terraform_code" {
   repository      = data.github_repository.existing_repo.name
   secret_name     = "TERRAFORM"
   plaintext_value = file("${path.module}/main.tf")
-}
-
-resource "github_repository_file" "pull_request_template" {
-  repository = data.github_repository.existing_repo.name
-  file       = ".github/pull_request_template.md"
-  content    = "### Describe your changes\n\n<!-- Please describe what you've changed -->\n\n---\n\n### Issue ticket number and link\n\n<!-- For example: Closes #123 or https://github.com/your/repo/issues/123     -->\n\n---\n\n### Checklist before requesting a review\n\n- [ ] I have performed a self-review of my code\n- [ ] If it is a core feature, I have added thorough tests\n- [ ] Do we need to implement analytics?\n- [ ] Will this be part of a product update?\n<!-- If yes, please write one phrase about this update -->"
-  branch     = "main"
 }
 
 
