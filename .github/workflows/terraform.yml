@@ -25,7 +25,9 @@ jobs:
         run: |
           cd terraform
           terraform init
-
+      - name: Show tfvars content
+        run: |
+           cat terraform/terraform.tfvars
       - name: Terraform Plan
        # env:
         #  TF_VAR_github_pat: ${{ secrets.PAT }}
