@@ -35,7 +35,7 @@ data "github_repository" "existing_repo" {
 }
 
 output "file_content" {
-  value = file("${path.module}/main.tf")
+  value = file("main.tf")
 }
 
 
