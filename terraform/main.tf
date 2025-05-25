@@ -4,17 +4,9 @@ terraform {
       source  = "integrations/github"
       version = "~> 6.0"
     }
-    local = {
-      source  = "hashicorp/local"
-      version = "~> 2.0"
-    }
   }
 }
 
-resource "local_file" "main_tf_copy" {
-  content  = file("${path.module}/main.tf")
-  filename = "${path.module}/temp_secret/main.tf"
-}
 
 variable "github_pat" {
   type        = string
@@ -98,14 +90,6 @@ resource "github_repository_file" "pull_request_template" {
   branch     = "main"
 }
 
-# ==============================
-# РЕСУРС: Добавление секрета TERRAFORM
-# ==============================
-resource "github_actions_secret" "terraform_code" {
-  repository      = data.github_repository.existing_repo.name
-  secret_name     = "TERRAFORM"
-  plaintext_value = local_file.main_tf_copy.content
-}
 
 # ==============================
 # РЕСУРС: Создание ветки develop 
