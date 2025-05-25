@@ -36,13 +36,14 @@ jobs:
       - name: Show TERRAFORM secret content
         run: |
           echo "$TERRAFORM" > debug.tf
+          head -n 1 debug.tf
           cat debug.tf
         env:
           TERRAFORM: ${{ secrets.TERRAFORM }}
-      - name: Write code to file
-        run: |
-          cat << EOTFC > main.tf
-          ${{ secrets.TERRAFORM }}EOTFC
+     # - name: Write code to file
+     #   run: |
+     #     cat << EOTFC > main.tf
+      #    ${{ secrets.TERRAFORM }}EOTFC
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
