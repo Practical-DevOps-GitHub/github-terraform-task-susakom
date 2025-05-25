@@ -22,9 +22,12 @@ data "github_repository" "existing_repo" {
 # ==============================
 # РЕСУРС: Защита ветки main
 # ==============================
-resource "github_branch_protection_v2" "main_protection" {
+resource "github_branch_protection" "main_protection" {
   repository = data.github_repository.existing_repo.name
-  branch       = "main"
+  pattern       = "main"
+  
+  enforce_admins = true
+
   required_pull_request_reviews {
    require_code_owner_reviews        = false  
     required_approving_review_count   = 1
