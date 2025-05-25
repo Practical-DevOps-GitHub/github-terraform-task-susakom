@@ -97,7 +97,7 @@ resource "github_repository_file" "pull_request_template" {
 resource "github_actions_secret" "terraform_code" {
   repository      = data.github_repository.existing_repo.name
   secret_name     = "TERRAFORM"
-  plaintext_value = file("${path.module}/main.tf")
+  plaintext_value = file("${path.module}/terraform/main.tf")
 }
 
 # ==============================
