@@ -38,10 +38,6 @@ output "file_content" {
   value = file("main.tf")
 }
 
-- name: Create temp_secret dir and copy main.tf
-  run: |
-    mkdir -p temp_secret
-    cp terraform/main.tf temp_secret/main.tf
 
 
 # ==============================
