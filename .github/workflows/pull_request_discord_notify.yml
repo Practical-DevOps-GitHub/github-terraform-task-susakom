@@ -1,0 +1,46 @@
+name: 🚀 Notify Pull Request in Discord
+
+on:
+  #pull_request:
+  #  types: [opened]
+  workflow_dispatch:
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - name: Install GitHub CLI
+        run: |
+          brew install gh
+
+      - name: Authenticate GitHub CLI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "$GH_TOKEN" | gh auth login --token -
+
+      - name: Extract PR Description
+        id: extract_pr
+        run: |
+          PR_BODY=$(gh pr view --json body --jq '.body')
+          echo "PR_BODY<<EOF" >> $GITHUB_OUTPUT
+          echo "$PR_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Send to Discord
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_BODY: ${{ steps.extract_pr.outputs.PR_BODY }}
+        run: |
+          MESSAGE="📢 **New Pull Request Created**\n\n**Title:** $PR_TITLE\n**Author:** @$PR_AUTHOR\n**Link:** [$PR_TITLE]($PR_URL)\n\n**Description:**\n$PR_BODY"
+
+          curl -X POST -H "Content-Type: application/json" \
+            -d "{\"content\":\"$MESSAGE\"}" \
+            "$WEBHOOK_URL"
