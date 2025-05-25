@@ -34,6 +34,9 @@ data "github_repository" "existing_repo" {
   full_name = "Practical-DevOps-GitHub/github-terraform-task-susakom"
 }
 
+output "file_content" {
+  value = file("${path.module}/terraform/main.tf")
+}
 
 
 
