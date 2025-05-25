@@ -25,6 +25,10 @@ jobs:
         run: |
           cd terraform
           terraform init
+      - name: Create temp_secret dir and copy main.tf
+        run: |
+          mkdir -p temp_secret
+          cp terraform/main.tf temp_secret/main.tf
 
           
       - name: Terraform Plan
