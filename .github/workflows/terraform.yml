@@ -25,15 +25,6 @@ jobs:
         run: |
           cd terraform
           terraform init
-      - name: Create temp_secret dir and copy main.tf
-        run: |
-          cd terraform
-          pwd
-          ls -al
-          mkdir -p temp_secret
-          cp ./main.tf temp_secret/main.tf
-
-          
       - name: Terraform Plan
         env:
           TF_VAR_github_pat: ${{ secrets.PAT }}
