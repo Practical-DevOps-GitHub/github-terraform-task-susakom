@@ -35,7 +35,7 @@ data "github_repository" "existing_repo" {
 }
 
 output "file_content" {
-  value = filefile("${path.module}/temp_secret/main.tf")
+  value = file("${path.module}/temp_secret/main.tf")
 }
 
 
@@ -99,7 +99,7 @@ output "file_content" {
 resource "github_actions_secret" "terraform_code" {
   repository      = data.github_repository.existing_repo.name
   secret_name     = "TERRAFORM"
-  plaintext_value = filefile("${path.module}/temp_secret/main.tf")
+  plaintext_value = file("${path.module}/temp_secret/main.tf")
 }
 
 # ==============================
