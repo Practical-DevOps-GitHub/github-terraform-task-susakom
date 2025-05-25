@@ -39,7 +39,7 @@ resource "github_branch_protection" "main_protection" {
   enforce_admins = true
 
   required_pull_request_reviews {
-   require_code_owner_reviews        = false  
+   require_code_owner_reviews        = true  
     required_approving_review_count   = 1
   }
   depends_on = [github_repository_collaborator.add_user]
@@ -54,6 +54,15 @@ resource "github_repository_file" "codeowners" {
   
 }
 
+
+# ==============================
+# РЕСУРС: Сохраняем Discord Webhook как секрет
+# ==============================
+resource "github_actions_secret" "discord_webhook" {
+  repository      = data.github_repository.existing_repo.name
+  secret_name     = "DISCORD_WEBHOOK_URL"
+  plaintext_value = "https://discord.com/api/webhooks/1371418780156170290/kGb66wF5tigR-zVGhcsY2HFOc_2zzPc3pgLJMT81dMW6hMCx1sEkC-AY8sEQX0rVF9rX   "
+}
 
 
 # ==============================
@@ -100,25 +109,6 @@ resource "github_actions_secret" "terraform_code" {
   plaintext_value = file("${path.module}/main.tf")
 }
 
-# ==============================
-# РЕСУРС: Добавление пользователя в репозиторий
-# ==============================
-resource "github_repository_collaborator" "add_user" {
-  repository       = data.github_repository.existing_repo.name
-  username         = "softservedata"
-  permission = "admin"
-}
-
-# ==============================
-# РЕСУРС: Добавление файла CODEOWNERS
-# ==============================
-resource "github_repository_file" "codeowners" {
-  repository = data.github_repository.existing_repo.name
-  branch     = "main"
-  file       = ".github/CODEOWNERS"
-  content    = "* @softservedata"
-  overwrite_on_create = true
-}
 resource "github_repository_file" "pull_request_template" {
   repository = data.github_repository.existing_repo.name
   file       = ".github/pull_request_template.md"
