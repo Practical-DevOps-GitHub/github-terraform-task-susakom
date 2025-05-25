@@ -23,7 +23,8 @@ data "github_repository" "existing_repo" {
 # РЕСУРС: Добавление пользователя в репозиторий
 # ==============================
 resource "github_repository_collaborator" "add_user" {
-  repository       = data.github_repository.existing_repo.name
+  # repository       = data.github_repository.existing_repo.name
+  repository = "Practical-DevOps-GitHub/github-terraform-task-susakom"
   username         = "softservedata"
   permission = "admin"
 }
