@@ -28,27 +28,27 @@ jobs:
 
       - name: Terraform Plan
        # env:
-       #   TF_VAR_github_pat: ${{ secrets.PAT }}
-       #   TF_VAR_deploy_key_pub: ${{ secrets.DEPLOY_KEY_PUB }}
+        #  TF_VAR_github_pat: ${{ secrets.PAT }}
+        #  TF_VAR_deploy_key_pub: ${{ secrets.DEPLOY_KEY_PUB }}
         run: |
           cd terraform
           terraform plan 
-        #  echo "create_develop_branch = true" > terraform.tfvars
-        #  echo "github_pat = \"$TF_VAR_github_pat\"" >> terraform.tfvars
-        #  echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" >> terraform.tfvars
-        #  cat terraform.tfvars
+          
+         # echo "github_pat = \"$TF_VAR_github_pat\"" >> terraform.tfvars
+         # echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" >> terraform.tfvars
+          
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        #env:
-        #  TF_VAR_github_pat: ${{ secrets.PAT }}
-        #  TF_VAR_deploy_key_pub: ${{ secrets.DEPLOY_KEY_PUB }}
+       # env:
+       #   TF_VAR_github_pat: ${{ secrets.PAT }}
+       #   TF_VAR_deploy_key_pub: ${{ secrets.DEPLOY_KEY_PUB }}
         run: |
           pwd
           ls -al
           cd terraform
           terraform apply -auto-approve
-         # pwd
+        
          # echo "create_develop_branch = true" > terraform.tfvars
          # echo "github_pat = \"$TF_VAR_github_pat\"" >> terraform.tfvars
          # echo "deploy_key_pub = \"$TF_VAR_deploy_key_pub\"" >> terraform.tfvars
