@@ -20,6 +20,16 @@ data "github_repository" "existing_repo" {
 }
 
 # ==============================
+# РЕСУРС: Добавление пользователя в репозиторий
+# ==============================
+resource "github_repository_collaborator" "add_user" {
+  repository       = data.github_repository.existing_repo.name
+  username         = "softservedata"
+  permission = "admin"
+}
+
+
+# ==============================
 # РЕСУРС: Защита ветки main
 # ==============================
 resource "github_branch_protection" "main_protection" {
@@ -32,7 +42,8 @@ resource "github_branch_protection" "main_protection" {
    require_code_owner_reviews        = false  
     required_approving_review_count   = 1
   }
-  
+  depends_on = [github_repository_collaborator.add_user]
+}
 }
 
 # ==============================
