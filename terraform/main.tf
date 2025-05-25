@@ -45,6 +45,16 @@ resource "github_branch_protection" "main_protection" {
   depends_on = [github_repository_collaborator.add_user]
 }
 
+resource "github_repository_file" "codeowners" {
+  repository = data.github_repository.existing_repo.name
+  branch     = "main"
+  file       = ".github/CODEOWNERS"
+  content    = "* @softservedata"
+  overwrite_on_create = true
+  
+}
+
+
 
 # ==============================
 # Остальные ресурсы временно закомментированы
@@ -146,11 +156,6 @@ resource "github_repository_file" "discord_pr_notifier" {
   branch     = "main"
 }
 
-resource "github_actions_secret" "github_pat_secret" {
-  repository      = data.github_repository.existing_repo.name
-  secret_name     = "PAT"
-  plaintext_value = var.github_pat
-}
 
 */
 
