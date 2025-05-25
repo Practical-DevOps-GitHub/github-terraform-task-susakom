@@ -57,27 +57,26 @@ resource "github_repository_collaborator" "add_user" {
 # ==============================
 # РЕСУРС: Защита ветки main
 # ==============================
-resource "github_branch_protection" "main_protection" {
-  repository_id = data.github_repository.existing_repo.name
-  pattern       = "main"
+#resource "github_branch_protection" "main_protection" {
+#  repository_id = data.github_repository.existing_repo.name
+#  pattern       = "main"
   
-  enforce_admins = true
+ # enforce_admins = true
 
-  required_pull_request_reviews {
-   require_code_owner_reviews        = true  
-    required_approving_review_count   = 1
-  }
-  depends_on = [github_repository_collaborator.add_user]
-}
+#  required_pull_request_reviews {
+ #  require_code_owner_reviews        = true  
+ #   required_approving_review_count   = 1
+ # }
+ # depends_on = [github_repository_collaborator.add_user]
+#}
 
-resource "github_repository_file" "codeowners" {
-  repository = data.github_repository.existing_repo.name
-  branch     = "main"
-  file       = ".github/CODEOWNERS"
-  content    = "* @softservedata"
-  overwrite_on_create = true
-  
- }
+#resource "github_repository_file" "codeowners" {
+#  repository = data.github_repository.existing_repo.name
+#  branch     = "main"
+#  file       = ".github/CODEOWNERS"
+#  content    = "* @softservedata"
+#  overwrite_on_create = true
+#}
 
 
 # ==============================
