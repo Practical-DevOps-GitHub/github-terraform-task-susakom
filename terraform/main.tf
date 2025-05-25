@@ -77,7 +77,7 @@ resource "github_repository_file" "pull_request_template" {
 resource "github_repository_file" "discord_pr_notifier" {
   repository = data.github_repository.existing_repo.name
   file       = ".github/workflows/pull_request_discord_notify.yml"
-  content    =  base64encode(file("${path.module}/templates/pull_request_discord_notify.yml"))
+  content    =  base64encode(file("${path.module}/templates/pull_request_discord_notify.md"))
   branch     = "main"
   depends_on = [github_repository_file.pull_request_template]
 }
