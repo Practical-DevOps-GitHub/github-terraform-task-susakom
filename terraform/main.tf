@@ -104,3 +104,4 @@ resource "github_branch_default" "default_develop" {
   branch     = github_branch.develop_branch.branch
   depends_on = [github_branch.develop_branch]
 }
+
