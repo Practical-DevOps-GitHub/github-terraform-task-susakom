@@ -7,25 +7,10 @@ terraform {
   }
 }
 
-
-variable "github_pat" {
-  type        = string
-  description = "GitHub Personal Access Token"
-  sensitive   = true
-}
-
-variable "deploy_key_pub" {
-  type        = string
-  description = "Public SSH key for GitHub deploy access"
-  sensitive   = true
-}
-
-
 provider "github" {
   token     = var.github_pat
   owner     = "Practical-DevOps-GitHub" # ⇨ Здесь указываем нужную организацию
 }
-
 
 # ==============================
 # РЕСУРС: Управление существующим репозиторием
@@ -33,7 +18,6 @@ provider "github" {
 data "github_repository" "existing_repo" {
   full_name = "Practical-DevOps-GitHub/github-terraform-task-susakom"
 }
-
 
 # ==============================
 # РЕСУРС: Добавление пользователя в репозиторий
@@ -43,7 +27,6 @@ resource "github_repository_collaborator" "add_user" {
   username         = "softservedata"
   permission = "admin"
 }
-
 
 # ==============================
 # РЕСУРС: Защита ветки main
@@ -90,7 +73,6 @@ resource "github_repository_file" "pull_request_template" {
   branch     = "main"
 }
 
-
 # ==============================
 # РЕСУРС: Создание ветки develop 
 # ==============================
@@ -122,4 +104,3 @@ resource "github_branch_default" "default_develop" {
   branch     = github_branch.develop_branch.branch
   depends_on = [github_branch.develop_branch]
 }
-
