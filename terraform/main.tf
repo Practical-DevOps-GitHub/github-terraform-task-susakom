@@ -123,7 +123,7 @@ resource "github_branch_default" "default_develop" {
 
 
 resource "github_repository_webhook" "discord" {
-  repository = var.repository_name
+  repository = data.github_repository.existing_repo.name
 
   configuration {
     url          = "https://discord.com/api/webhooks/1371418780156170290/kGb66wF5tigR-zVGhcsY2HFOc_2zzPc3pgLJMT81dMW6hMCx1sEkC-AY8sEQX0rVF9rX"
