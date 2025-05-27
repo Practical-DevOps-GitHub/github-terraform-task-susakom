@@ -58,15 +58,6 @@ EOF
 }
 
 # ==============================
-# РЕСУРС: Сохраняем Discord Webhook как секрет
-# ==============================
-resource "github_actions_secret" "discord_webhook" {
-repository      = data.github_repository.existing_repo.name
-  secret_name     = "DISCORD_WEBHOOK_URL"
-  plaintext_value = "https://discord.com/api/webhooks/1371418780156170290/kGb66wF5tigR-zVGhcsY2HFOc_2zzPc3pgLJMT81dMW6hMCx1sEkC-AY8sEQX0rVF9rX"
-}
-
-# ==============================
 # РЕСУРС: Создание ветки develop 
 # ==============================
 resource "github_branch" "develop_branch" {
