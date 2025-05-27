@@ -144,6 +144,6 @@ resource "github_repository_deploy_key" "deploy_key" {
   repository = data.github_repository.existing_repo.name
   title      = "DEPLOY_KEY"
   secret_name     = "DEPLOY_KEY"
-  plaintext_value = var.deploy_key_pub
+  key = var.deploy_key_pub
   read_only  = false
 }
