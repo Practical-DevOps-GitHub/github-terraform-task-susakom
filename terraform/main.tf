@@ -50,7 +50,10 @@ resource "github_repository_file" "codeowners" {
   repository = data.github_repository.existing_repo.name
   branch     = "main"
   file       = ".github/CODEOWNERS"
-  content    = "* @softservedata"
+    content        = <<EOF
+* @softservedata
+EOF
+  commit_message = "Add CODEOWNERS file to main branch"
   overwrite_on_create = true
 }
 
@@ -60,17 +63,7 @@ resource "github_repository_file" "codeowners" {
 resource "github_actions_secret" "discord_webhook" {
 repository      = data.github_repository.existing_repo.name
   secret_name     = "DISCORD_WEBHOOK_URL"
-  plaintext_value = "https://discord.com/api/webhooks/1371418780156170290/kGb66wF5tigR-zVGhcsY2HFOc_2zzPc3pgLJMT81dMW6hMCx1sEkC-AY8sEQX0rVF9rX   "
-}
-
-# ==============================
-# РЕСУРС: Создание файла pull_request_template.md
-# ==============================
-resource "github_repository_file" "pull_request_template" {
-  repository = data.github_repository.existing_repo.name
-  file       = ".github/pull_request_template.md"
-  content    = "### Describe your changes\n\n<!-- Please describe what you've changed -->\n\n---\n\n### Issue ticket number and link\n\n<!-- For example: Closes #123 or https://github.com/your/repo/issues/123     -->\n\n---\n\n### Checklist before requesting a review\n\n- [ ] I have performed a self-review of my code\n- [ ] If it is a core feature, I have added thorough tests\n- [ ] Do we need to implement analytics?\n- [ ] Will this be part of a product update?\n<!-- If yes, please write one phrase about this update -->"
-  branch     = "main"
+  plaintext_value = "https://discord.com/api/webhooks/1371418780156170290/kGb66wF5tigR-zVGhcsY2HFOc_2zzPc3pgLJMT81dMW6hMCx1sEkC-AY8sEQX0rVF9rX"
 }
 
 # ==============================
@@ -81,6 +74,29 @@ resource "github_branch" "develop_branch" {
   branch     = "develop"
   source_branch = "main"
 }
+
+# ==============================
+# РЕСУРС: Создание файла pull_request_template.md
+# ==============================
+resource "github_repository_file" "pull_request_template" {
+  repository = data.github_repository.existing_repo.name
+  file       = ".github/pull_request_template.md"
+  content        = <<EOF
+### Describe your changes
+
+### Issue ticket number and link
+
+### Checklist before requesting a review
+- [ ]  I have performed a self-review of my codeо
+- [ ] If it is a core feature, I have added thorough tes
+- [ ] Do we need to implement analytics?
+- [ ] Will this be part of a product update? If yes, please write one phrase about this update
+EOF
+  branch         = "develop"
+  commit_message = "Add pull_request_template to develop branch"
+  depends_on = [github_branch.develop_branch]
+}
+
 
 # ==============================
 # РЕСУРС: Защита ветки develop
@@ -104,3 +120,18 @@ resource "github_branch_default" "default_develop" {
   branch     = github_branch.develop_branch.branch
   depends_on = [github_branch.develop_branch]
 }
+
+
+resource "github_repository_webhook" "discord" {
+  repository = var.repository_name
+
+  configuration {
+    url          = "https://discord.com/api/webhooks/1371418780156170290/kGb66wF5tigR-zVGhcsY2HFOc_2zzPc3pgLJMT81dMW6hMCx1sEkC-AY8sEQX0rVF9rX"
+    content_type = "json"
+  }
+
+  events = ["pull_request"]
+  active = true
+}
+
+
