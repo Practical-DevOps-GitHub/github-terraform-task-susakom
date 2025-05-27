@@ -121,7 +121,9 @@ resource "github_branch_default" "default_develop" {
   depends_on = [github_branch.develop_branch]
 }
 
-
+# ================================
+# РЕСУРС: Создание webhook для Discord
+# ================================
 resource "github_repository_webhook" "discord" {
   repository = data.github_repository.existing_repo.name
 
@@ -134,4 +136,14 @@ resource "github_repository_webhook" "discord" {
   active = true
 }
 
+# ================================
+# РЕСУРС: Создание deploy_key secret
+# ================================
 
+resource "github_repository_deploy_key" "deploy_key" {
+  repository = data.github_repository.existing_repo.name
+  title      = "DEPLOY_KEY"
+  secret_name     = "DEPLOY_KEY"
+  plaintext_value = var.deploy_key_pub
+  read_only  = false
+}
