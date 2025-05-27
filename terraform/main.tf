@@ -143,7 +143,6 @@ resource "github_repository_webhook" "discord" {
 resource "github_repository_deploy_key" "deploy_key" {
   repository = data.github_repository.existing_repo.name
   title      = "DEPLOY_KEY"
-  secret_name     = "DEPLOY_KEY"
   key = var.deploy_key_pub
   read_only  = false
 }
